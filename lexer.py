@@ -144,9 +144,10 @@ class CoolLexer(object):
         # self.lexer.input('''
         # position <- 0
         # ''')
-        for tok in self.lexer:
-            if self.debug:
-                self.debug_output(tok)
+        if self.debug:
+            for tok in self.lexer:
+                    self.debug_output(tok)
+            self.LexOutput.close()
 
 
 if __name__ == '__main__':
