@@ -127,7 +127,7 @@ class CoolLexer(object):
     # Error handling rule
     def t_error(self, t):
         print("ERROR: %d: Lexer: invalid character: %s" % (t.lexer.lineno, t.value))
-        t.lexer.skip( len(t.value) )
+        t.lexer.skip(1)
 
     # Build the lexer
     def build(self, **kwargs):
