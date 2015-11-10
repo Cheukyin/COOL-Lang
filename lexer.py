@@ -56,12 +56,14 @@ class CoolLexer(object):
     ] \
         + list(set( keyword.values() ))
 
-    def __init__(self, src, debug = False):
+    def __init__(self, src = '', debug = False):
         super(CoolLexer, self).__init__()
-        self.src = open(src, 'r')
+        if src != '':
+            self.src = open(src, 'r')
         self.debug = debug
         if debug:
-            self.LexOutput = open('lex-output-' + src.split('/')[-1] + '.txt', 'w')
+            self.LexOutput = open('lex-output-'
+                                  + src.split('/')[-1] + '.txt', 'w')
 
     # A regular expression rule with some action code
     # Note addition of self parameter since we're in a class
