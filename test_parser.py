@@ -29,13 +29,20 @@ def TestParser():
     case1 = '''
             class Main inherits IO {
                 i:Int;
+                b: Int <- (1+2)*3;
             } ;
             '''
     exp1 = Program([Class('Main', 'IO',
-                       [Attribute('i', 'Int', None, 3)],
-                       [],
-                       2)],
-                0)
+                          [Attribute('b', 'Int', Mul(Add(INT(1, 3),
+                                                         INT(2,3),
+                                                         3),
+                                                     INT(3, 3),
+                                                     3), 3),
+                           Attribute('i', 'Int', None, 3),
+                       ],
+                          [],
+                          2)],
+                   0)
     AssertEq(testparser.process(case1), exp1)
 
     # Case 2

@@ -214,7 +214,8 @@ class BinaryOp(Expr):
 
     def __repr__(self):
         return "%s(%s, %s, %s)" \
-                % (self.__class__, self.E1, self.E2,
+                % (str(self.__class__).split('.')[1].split("'")[0],
+                   self.E1, self.E2,
                    self.lineno)
 
 class Add(BinaryOp): pass
@@ -229,6 +230,12 @@ class ATOM(Expr):
     def __init__(self, Value, lineno):
         self.Value = Value
         self.lineno = lineno
+
+    def __repr__(self):
+        return "%s(%s, %s)" \
+                % (str(self.__class__).split('.')[1].split("'")[0],
+                   self.Value,
+                   self.lineno)
 
 class INT(ATOM): pass
 class STRING(ATOM): pass
