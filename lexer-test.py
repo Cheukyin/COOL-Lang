@@ -4,7 +4,9 @@ import lexer
 import os
 import glob
 
-if __name__ == '__main__':
+
+def TestLexer():
+    print('============================================================================')
     print("Lexer Test:")
 
     src_dir = 'cool-examples'
@@ -25,3 +27,7 @@ if __name__ == '__main__':
             os.system('rm ' + cool_lex_output + ' ' + my_lex_output)
         else:
             print(cl + ': ' + 'Error')
+    print('============================================================================')
+
+if __name__ == '__main__':
+    TestLexer()
