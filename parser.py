@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import sys, os
 import AST
 import lexer
@@ -354,3 +356,32 @@ class CoolParser(object):
         coollexer.build()   # Build the lexer
         self.parser.parse(src, coollexer.lexer)
         return self.program
+
+
+if __name__ == '__main__':
+    # Build the parser and try it out
+    parser = CoolParser()
+    parser.build()   # Build the lexer
+    # parser.process( open(sys.argv[1], 'r').read() )
+    parser.process(
+        '''
+        class Main inherits IO {
+            i:Int;
+        } ;
+        '''
+    )
+    print(parser.program.lineno)
+    print(parser.program[0].lineno)
+    print(parser.program[0].Name)
+    print(parser.program[0].Superclass)
+    print(parser.program[0].AttributeList[0].lineno)
+    print(parser.program[0].AttributeList[0].ID)
+    print(parser.program[0].AttributeList[0].Type)
+    print(parser.program[0].AttributeList[0].Value)
+    print(parser.program[0].MethodList)
+    print( parser.program == AST.Program([AST.Class('Main', 'IO',
+                                                    [AST.Attribute('i', 'nnt',
+                                                                   None, 3)],
+                                                    [], 2)], 0)
+           )
+    print(parser.program)

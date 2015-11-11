@@ -1,31 +1,45 @@
 #!/usr/bin/python3
 
-import unittest
 import parser
 from AST import *
 
-class TestParser(unittest.TestCase):
-    def setUp(self):
-        # Build the parser
-        self.parser = parser.CoolParser()
-        self.parser.build()
+TestNum = 1
 
-    def testClass(self):
-        self.assertEqual
-        (
-            self.parser.process(
-                    '''
-                    class Main inherits IO {
-                        i:Int;
-                    } ;
-                    '''
-            ),
-            Program([Class('Main', 'IO',
-                           [Attribute('i', 'Int', None, 3)],
-                           [], 2)],
-                    0)
-        )
+def AssertEq(E1, E2):
+    global TestNum
+    if E1 == E2:
+        print("Case %s: OK" % TestNum)
+        TestNum += 1
+    else:
+        print()
+        print("Case %s: ERROR!!!" % TestNum)
+        print("Parsed Result: ")
+        print(E1)
+        print("Expected Result: ")
+        print(E2)
+        print()
+
+def TestParser():
+    print("Lexer Test:")
+
+    testparser = parser.CoolParser()
+    testparser.build()
+
+    # Case 1
+    case1 = '''
+            class Main inherits IO {
+                i:Int;
+            } ;
+            '''
+    exp1 = Program([Class('Main', 'IO',
+                       [Attribute('i', 'Int', None, 3)],
+                       [],
+                       2)],
+                0)
+    AssertEq(testparser.process(case1), exp1)
+
+    # Case 2
+
 
 if __name__ == "__main__":
-    ParserSuite = unittest.TestLoader().loadTestsFromTestCase(TestParser)
-    unittest.TextTestRunner(verbosity = 2).run(ParserSuite)
+    TestParser()
