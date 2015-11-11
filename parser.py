@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 import sys, os
 import AST
 import lexer
@@ -355,10 +353,4 @@ class CoolParser(object):
         coollexer = lexer.CoolLexer()
         coollexer.build()   # Build the lexer
         self.parser.parse(src, coollexer.lexer)
-
-
-if __name__ == '__main__':
-    # Build the parser and try it out
-    parser = CoolParser()
-    parser.build()   # Build the lexer
-    parser.process( open(sys.argv[1], 'r').read() )
+        return self.program
