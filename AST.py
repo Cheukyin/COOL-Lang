@@ -1,7 +1,7 @@
 class Expr:
     def __eq__(self, E):
         if type(self) != type(E):
-            return false
+            return False
 
         for (attr, val) in self.__dict__.items():
             if attr == 'lineno':

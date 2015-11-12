@@ -26,24 +26,31 @@ def TestParser():
     testparser.build()
 
     # Case 1
-    case1 = '''
+    case = r'''
             class Main inherits IO {
                 i:Int;
+                main() : Object {
+                  out_string("\"Hello, world.\"\n")
+                } ;
                 b: Int <- (1+2)*3;
             } ;
             '''
-    exp1 = Program([Class('Main', 'IO',
-                          [Attribute('b', 'Int', Mul(Add(INT(1, 3),
+    exp = Program([Class('Main', 'IO',
+                         [ Attribute('i', 'Int', None, 3),
+                           Attribute('b', 'Int', Mul(Add(INT(1, 3),
                                                          INT(2,3),
                                                          3),
                                                      INT(3, 3),
                                                      3), 3),
-                           Attribute('i', 'Int', None, 3),
                        ],
-                          [],
-                          2)],
-                   0)
-    AssertEq(testparser.process(case1), exp1)
+                         [Method('main', [], 'Object',
+                                 SelfDispatch('out_string', [STRING(r'\"Hello, world.\"\n', 5)],
+                                              5),
+                                 4)
+                      ],
+                         2)],
+                  0)
+    AssertEq(testparser.process(case), exp)
 
     # Case 2
 
