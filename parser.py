@@ -27,7 +27,7 @@ class CoolParser(object):
         '''Program : Class semi
                    | Class semi Program
         '''
-        self.program.append( p[1] )
+        self.program = AST.Program( [ p[1] ], p.lineno(1) ) + self.program
 
     # Class := class TYPE [inherits TYPE] { feature }
     def p_Class(self, p):
@@ -68,9 +68,9 @@ class CoolParser(object):
                 p[0] = [ [], [ p[1] ] ]
         else:
             if type(p[1]) == AST.Attribute:
-                p[2][0].append( p[1] )
+                p[2][0] = [ p[1] ] + p[2][0]
             else:
-                p[2][1].append( p[1] )
+                p[2][1] = [ p[1] ] + p[2][1]
 
             p[0] = p[2]
 
@@ -106,9 +106,9 @@ class CoolParser(object):
             p[0] = [ AST.Formal( ID = p[1], Type = p[2],
                                  lineno = p.lineno(1) ) ]
         else:
-            p[5].append( AST.Formal( ID = p[1], Type = p[2],
-                                     lineno = p.lineno(1) ) )
-            p[0] = p[5]
+            p[0] = [ AST.Formal( ID = p[1], Type = p[2],
+                                 lineno = p.lineno(1) )
+                   ] + p[5]
 
     def p_Expr(self, p):
         '''Expr : Assignment
@@ -297,15 +297,15 @@ class CoolParser(object):
                                   Value = p[5],
                                   lineno = p.lineno(1) ) ]
         elif len(p) == 5:
-            p[4].append( AST.Binding( ID = p[1], Type = p[3],
-                                      Value = None,
-                                      lineno = p.lineno(1) ) )
-            p[0] = p[4]
+            p[0] = [ AST.Binding( ID = p[1], Type = p[3],
+                                  Value = None,
+                                  lineno = p.lineno(1) )
+                   ] + p[4]
         else:
-            p[6].append( AST.Binding( ID = p[1], Type = p[3],
-                                      Value = p[5],
-                                      lineno = p.lineno(1) ) )
-            p[0] = p[6]
+            p[0] = [ AST.Binding( ID = p[1], Type = p[3],
+                                  Value = p[5],
+                                  lineno = p.lineno(1) )
+                   ] + p[6]
 
     def p_PattenMatchExpr(self, p):
         '''PattenMatchExpr : identifier colon type rarrow Expr semi
@@ -316,10 +316,10 @@ class CoolParser(object):
                                        Exp = p[5],
                                        lineno = p.lineno(1) ) ]
         else:
-            p[7].append( AST.PatternMatch( ID = p[1], Type = p[3],
-                                           Exp = p[5],
-                                           lineno = p.lineno(1) ) )
-            p[0] = p[7]
+            p[0] = [ AST.PatternMatch( ID = p[1], Type = p[3],
+                                       Exp = p[5],
+                                       lineno = p.lineno(1) )
+                   ] + p[7]
 
     # MultiParam := Expr [, Expr]*
     def p_MultiParam(self, p):
@@ -329,8 +329,7 @@ class CoolParser(object):
         if len(p) == 2:
             p[0] = [ p[1] ]
         else:
-            p[3].append( p[1] )
-            p[0] = p[3]
+            p[0] = [ p[1] ] + p[3]
 
     # MultiExpr := [Expr;]+
     def p_MultiExpr(self, p):
@@ -340,8 +339,7 @@ class CoolParser(object):
         if len(p) == 3:
             p[0] = AST.Block( [ p[1] ], lineno = p.lineno(1) )
         else:
-            p[3].append( AST.Block( [ p[1] ], lineno = p.lineno(1) ) )
-            p[0] = p[3]
+            p[0] = AST.Block( [ p[1] ], lineno = p.lineno(1) ) + p[3]
 
     def p_error(self, p):
         print("Syntax error in input: %s" % p)
@@ -370,18 +368,4 @@ if __name__ == '__main__':
         } ;
         '''
     )
-    print(parser.program.lineno)
-    print(parser.program[0].lineno)
-    print(parser.program[0].Name)
-    print(parser.program[0].Superclass)
-    print(parser.program[0].AttributeList[0].lineno)
-    print(parser.program[0].AttributeList[0].ID)
-    print(parser.program[0].AttributeList[0].Type)
-    print(parser.program[0].AttributeList[0].Value)
-    print(parser.program[0].MethodList)
-    print( parser.program == AST.Program([AST.Class('Main', 'IO',
-                                                    [AST.Attribute('i', 'nnt',
-                                                                   None, 3)],
-                                                    [], 2)], 0)
-           )
     print(parser.program)

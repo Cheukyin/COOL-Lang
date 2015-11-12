@@ -21,6 +21,14 @@ class ListType(list):
         super(ListType, self).__init__(L)
         self.lineno = lineno
 
+    def __add__(self, L):
+        if type(L) != type(self):
+            raise "Type inconsistent when adding"
+
+        tmp = super(ListType, self).__add__(L)
+        self = self.__class__(tmp, self.lineno)
+        return self
+
     def __eq__(self, L):
         return type(self) == type(L) \
                and super(ListType, self).__eq__(L) \
