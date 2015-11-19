@@ -158,7 +158,7 @@ class Loop(Expr):
         self.lineno = lineno
 
     def __repr__(self):
-        return "Loop(%s, %s, %s, %s)" \
+        return "Loop(%s, %s, %s)" \
                 % (self.Cond, self.Body, self.lineno)
 
 class Block(ListType): pass

@@ -103,10 +103,10 @@ class CoolParser(object):
                   | identifier colon type comma Formal
         '''
         if len(p) == 4:
-            p[0] = [ AST.Formal( ID = p[1], Type = p[2],
+            p[0] = [ AST.Formal( ID = p[1], Type = p[3],
                                  lineno = p.lineno(1) ) ]
         else:
-            p[0] = [ AST.Formal( ID = p[1], Type = p[2],
+            p[0] = [ AST.Formal( ID = p[1], Type = p[3],
                                  lineno = p.lineno(1) )
                    ] + p[5]
 
