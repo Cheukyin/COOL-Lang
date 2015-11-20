@@ -163,24 +163,68 @@ def TestParser():
                                                          0),
                                                Block([Assignment('x', Mul(IDENTIFIER('x', 55),
                                                                           IDENTIFIER('y', 55),
-                                                                          0),
-                                                                 55),
+                                                                          0), 55),
                                                       Assignment('y', Add(IDENTIFIER('y', 56),
                                                                           INT(1, 56),
-                                                                          0),
-                                                                 56)],
-                                                     0),
-                                               53),
-                                          52),
+                                                                          0), 56)], 0), 53), 52),
                                       DynamicDispatch(New('E', 60),
                                                       'set_var',
                                                       [IDENTIFIER('x', 60)],
-                                                      0)],
-                                     0),
-                               50),
-                           49),
+                                                      0)], 0), 50), 49),
                 ],
                   10)]
+    AssertEq(testparser.process(case), exp)
+
+    testparser.program = Program([], 0)
+
+    # Case 3
+    case += r'''
+             class Foo inherits Bazz {
+                  a : Razz <- case self of
+                                   n : Razz => (new Bar);
+                                   n : Foo => (new Razz);
+                                   n : Bar => n;
+                              esac;
+
+                  b : Int <- a.doh() + g.doh() + doh() + printh();
+
+                  doh() : Int { (let i : Int <- h in { h <- h + 2; i; } ) };
+
+             };
+             '''
+    exp += [Class('Foo', 'Bazz',
+                   [Attribute('a', 'Razz',
+                              Case(IDENTIFIER('self', 0),
+                                   [PatternMatch('n', 'Razz',
+                                                 New('Bar', 0),
+                                                 0),
+                                    PatternMatch('n', 'Foo',
+                                                 New('Razz', 0),
+                                                 0),
+                                    PatternMatch('n', 'Bar',
+                                                 IDENTIFIER('n', 0),
+                                                 0)],
+                                   0),
+                              0),
+                    Attribute('b', 'Int',
+                              Add(Add(Add(DynamicDispatch(IDENTIFIER('a', 0), 'doh', [], 0),
+                                          DynamicDispatch(IDENTIFIER('g', 0), 'doh', [], 9),
+                                          0),
+                                      SelfDispatch('doh', [], 0),
+                                      0),
+                                  SelfDispatch('printh', [], 0),
+                                  0),
+                              0),
+                ],
+                   [Method('doh', [], 'Int',
+                           Let([Binding('i', 'Int', IDENTIFIER('h', 0), 0)],
+                               Block([Assignment('h', Add(IDENTIFIER('h', 0), INT(2, 0), 9),
+                                                 0),
+                                      IDENTIFIER('i', 0)],
+                                     0),
+                               0),
+                           0)],
+                  0)]
     AssertEq(testparser.process(case), exp)
 
 

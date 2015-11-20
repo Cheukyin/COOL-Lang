@@ -185,7 +185,7 @@ class PatternMatch(Expr):
 
     def __repr__(self):
         return "PatternMatch(%s, %s, %s, %s)" \
-                % (self.ID, self.Type, self,Exp,
+                % (self.ID, self.Type, self.Exp,
                    self.lineno)
 
 class Case(Expr):
