@@ -164,11 +164,11 @@ class CoolParser(object):
         '''
         if len(p) == 8:
             p[0] = AST.StaticDispatch( Obj = p[1], Type = p[3],
-                                       MethodName = p[3], ParamList = [],
+                                       MethodName = p[5], ParamList = [],
                                        lineno = p.lineno(1) )
         else:
             p[0] = AST.StaticDispatch( Obj = p[1], Type = p[3],
-                                       MethodName = p[3], ParamList = p[7],
+                                       MethodName = p[5], ParamList = p[7],
                                        lineno = p.lineno(1) )
 
     def p_SelfDispatch(self, p):
