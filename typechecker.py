@@ -64,6 +64,9 @@ class TypeChecker:
             if name in attr_dict:
                 raise TypeError( "attr redefined: %s.%s in lineno %s"
                                  % (clsname, name, attr.lineno) )
+            if 'self' == name:
+                raise TypeError( "self cannot be defined in %s in lineno %s"
+                                 % (clsname, attr.lineno) )
 
             attr_dict[name] = [attr.Type, attr.lineno]
 
