@@ -161,3 +161,12 @@ class TypeChecker:
 
             raise TypeError("inheritance cycle: "
                             + str(inherit_path))
+
+
+    def check_main_validation(self):
+        if 'Main' not in self.inheritance_graph:
+            raise TypeError("class Main not defined")
+        if 'main' not in self.class2method['Main']:
+            raise TypeError("Main.main is not defined")
+        if self.class2method['Main']['main'][0][1] != []:
+            raise TypeError("Main.main should not take any formals")
