@@ -119,4 +119,45 @@ class TypeChecker:
 
 
     def detect_inheritance_cycle(self):
-        pass
+        is_visited = {}
+        for cls in self.inheritance_graph:
+            is_visited[cls] = False
+
+        for cls in self.inheritance_graph:
+            if is_visited[cls]:
+                continue
+
+            inherit_path = [cls]
+
+            # collision point: y = f^n(x) = f^(2n+1)(x)
+            slow = cls
+            fast = self.inheritance_graph[cls]
+
+            is_visited[slow] = True
+            inherit_path.append(fast)
+
+            is_cyclic = True
+            while fast != slow:
+                slow = self.inheritance_graph[slow]
+
+                if fast is None or is_visited[fast]:
+                    is_cyclic = False
+                    break
+
+                is_visited[fast] = True
+                fast = self.inheritance_graph[fast]
+                inherit_path.append(fast)
+
+                if fast is None or is_visited[fast]:
+                    is_cyclic = False
+                    break
+
+                is_visited[fast] = True
+                fast = self.inheritance_graph[fast]
+                inherit_path.append(fast)
+
+            if not is_cyclic:
+                continue
+
+            raise TypeError("inheritance cycle: "
+                            + str(inherit_path))
