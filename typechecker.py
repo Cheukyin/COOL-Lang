@@ -85,6 +85,9 @@ class TypeChecker:
             method_dict[name] = [[result_type, formal_type], method.lineno]
 
     def type_collect(self):
+        '''
+        collect type of attributes and methods and build the class hierarchy
+        '''
         for cls in self.ast:
             name = cls.Name
             superclass = cls.Superclass
@@ -102,6 +105,10 @@ class TypeChecker:
 
 
     def detect_inheritance_validation(self):
+        '''
+        Check to see if a class inherits from final classes
+        and if a class inherits from an undeclared class
+        '''
         inherit_final_err = []
         inherit_undeclared_err = []
 
@@ -173,3 +180,11 @@ class TypeChecker:
             raise TypeError("Main.main is not defined")
         if self.class2method['Main']['main'][0][1] != []:
             raise TypeError("Main.main should not take any formals")
+
+
+    def check_method_type_validation(type):
+        '''
+        Check for a child class that redefines a parent method
+        but changes the formals
+        '''
+        pass
